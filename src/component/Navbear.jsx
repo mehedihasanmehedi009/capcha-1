@@ -2,7 +2,6 @@ import { Link, NavLink } from "react-router";
 import logo from "../assets/firebase-logo.png";
 import MyContainer from "./MyContainer/MyContainer";
 import MyLink from "../../../../Firebase-fighter/src/components/MyLink";
- 
 
 const Navbar = () => {
   return (
@@ -24,7 +23,7 @@ const Navbar = () => {
         </ul>
 
         <button className="bg-purple-500 text-white px-4 py-2 rounded-md font-semibold cursor-pointer">
-          <Link to={"/signin"}>Sign in</Link>
+          <Link to={"/signup"}>Sign in</Link>
         </button>
       </MyContainer>
     </div>

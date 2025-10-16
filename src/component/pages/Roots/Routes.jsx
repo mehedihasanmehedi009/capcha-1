@@ -3,24 +3,34 @@ import MainLoyet from "../../MainLoyete/MainLoyet";
 import Homepage from "../HomePages";
 import AboutUs from "../AboutUs";
 import Profile from "../Profile";
-
- export const router = createBrowserRouter([
+import SignUp from "../SignUp";
+import SignIn from "../SignIn";
+ 
+export const router = createBrowserRouter([
   {
     path: "/",
-    element:<MainLoyet/>,
-    children:[
-        {
-        index:true,
-        element:<Homepage/>
-        }
-        ,{
-           path:"/about",
-           element:<AboutUs/> 
-        }
-        ,{
-            path:"/profile",
-            element:<Profile/>
-        }
-    ]
+    element: <MainLoyet />,
+    children: [
+      {
+        index: true,
+        element: <Homepage />,
+      },
+      {
+        path: "/about",
+        element: <AboutUs />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },{
+        path:"/signup",
+        element:<SignUp/>
+      }
+      ,{
+        path:"/signin",
+        element:<SignIn/>
+      }
+     
+    ],
   },
 ]);
