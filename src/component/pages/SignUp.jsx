@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import MyContainer from "../MyContainer/MyContainer";
 import { Link } from "react-router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase.config";
 import { toast } from "react-toastify";
+import { FaEye } from "react-icons/fa";
+import { IoEyeOff } from "react-icons/io5";
 
 const SignUp = () => {
+  const [hiden, setHiden] = useState(false);
   const handleSignup = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -30,9 +33,14 @@ const SignUp = () => {
         toast.success("success Full");
       })
       .catch((e) => {
-        console.log(e);
-        toast.error(e.message);
+        console.log(e.code);
+        if (e.code == "auth/email-already-in-use") {
+          toast.error("popup closed by user");
+        }
       });
+  };
+  const hendel = () => {
+    setHiden(!hiden);
   };
   return (
     <div className="min-h-[96vh] flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 relative overflow-hidden">
@@ -75,12 +83,17 @@ const SignUp = () => {
                   Password
                 </label>
                 <input
-                  type="password"
+                  type={hiden ? "text" : "password"}
                   name="password"
                   placeholder="••••••••"
                   className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-400"
                 />
-                <span className="absolute right-[8px] top-[36px] cursor-pointer z-50"></span>
+                <span
+                  onClick={hendel}
+                  className="absolute right-[8px] top-[36px] cursor-pointer z-50"
+                >
+                  {hiden ? <FaEye /> : <IoEyeOff />}
+                </span>
               </div>
 
               <button type="submit" className="my-btn">
