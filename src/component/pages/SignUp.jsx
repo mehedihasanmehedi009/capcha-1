@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MyContainer from "../MyContainer/MyContainer";
 import { Link } from "react-router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase.config";
 import { toast } from "react-toastify";
 import { FaEye } from "react-icons/fa";
@@ -11,26 +11,36 @@ const SignUp = () => {
   const [hiden, setHiden] = useState(false);
   const handleSignup = (e) => {
     e.preventDefault();
+    const displayName = e.target.name.value;
+    const photoURL = e.target.photo.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    console.log("sing up fuction", email, password);
-    // if (password.length < 6) {
-    //   toast.error("  this is not valid password  up  to 7 number ");
-    //   return;
+    console.log("sing up fuction", { email, password, displayName, photoURL });
 
-    const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/;
-    if (!pattern.test(password)) {
-      toast.error(
-        "Password must have at least 6 characters, 1 uppercase letter, and 1 number!"
-      );
-      return;
-    }
+    // const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/;
+    // if (!pattern.test(password)) {
+    //   toast.error(
+    //     "Password must have at least 6 characters, 1 uppercase letter, and 1 number!"
+    //   );
+    //   return;
+    // }
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
-        console.log(res);
-        toast.success("success Full");
+        updateProfile(res.user,{
+          displayName,
+          photoURL
+        })
+        .then((res)=>{
+          console.log(res)
+          toast.success("Acount Allraedy")
+        })
+        .catch((e)=>{
+             toast.error(e.massage);
+        })
+      
+        
       })
       .catch((e) => {
         console.log(e.code);
@@ -68,6 +78,26 @@ const SignUp = () => {
             </h2>
 
             <form onSubmit={handleSignup} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Photo</label>
+                <input
+                  type="text"
+                  name="photo"
+                  placeholder="Your Photo URl"
+                  className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                />
+              </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Email</label>
                 <input

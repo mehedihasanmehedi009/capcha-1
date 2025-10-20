@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
+import { FaGithub } from "react-icons/fa";
 import MyContainer from "../MyContainer/MyContainer";
 import {
+  GithubAuthProvider,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -13,6 +15,7 @@ import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
 
 const googleProvider = new GoogleAuthProvider();
+const GitHubprovider  = new GithubAuthProvider()
 
 const SignIn = () => {
   const [users, setUser] = useState(null);
@@ -24,13 +27,13 @@ const SignIn = () => {
     const password = e.target.password.value;
 
     console.log("sing up fuction", email, password);
-    const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/;
-    if (!pattern.test(password)) {
-      toast.error(
-        "Password must have at least 6 characters, 1 uppercase letter, and 1 number!"
-      );
-      return;
-    }
+    // const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/;
+    // if (!pattern.test(password)) {
+    //   toast.error(
+    //     "Password must have at least 6 characters, 1 uppercase letter, and 1 number!"
+    //   );
+    //   return;
+    // }
 
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
@@ -56,6 +59,24 @@ const SignIn = () => {
         toast.error(e.message);
       });
   };
+  // Github
+   const hendelgithub = () => {
+     signInWithPopup(auth, GitHubprovider)
+      .then((res) => {
+        console.log(res.user);
+        setUser(res.user);
+        toast.success("success Full");
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log(e.code);
+        if (e.code == "auth/email-already-in-use") {
+          toast.error("popup closed by user");
+        }
+      });
+   }  
+
+  //  Google
   const hendelgoogle = () => {
     signInWithPopup(auth, googleProvider)
       .then((res) => {
@@ -150,6 +171,15 @@ const SignIn = () => {
                   <span className="text-sm text-white/70">or</span>
                   <div className="h-px w-16 bg-white/30"></div>
                 </div>
+                {/* Google Sing */}
+                <button
+                  onClick={hendelgithub}
+                  type="button"
+                  className="flex items-center justify-center gap-3 bg-white text-gray-800 px-5 py-2 rounded-lg w-full font-semibold hover:bg-gray-100 transition-colors cursor-pointer"
+                >
+                  <FaGithub size={22} />
+                  Continue with GitHub
+                </button>
 
                 {/* Google Signin */}
                 <button

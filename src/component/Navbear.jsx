@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router";
+import { Link } from "react-router";
 import logo from "../assets/firebase-logo.png";
 import MyContainer from "./MyContainer/MyContainer";
 import MyLink from "../../../../Firebase-fighter/src/components/MyLink";
