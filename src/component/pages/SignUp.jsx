@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MyContainer from "../MyContainer/MyContainer";
 import { Link } from "react-router";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase.config";
 import { toast } from "react-toastify";
 import { FaEye } from "react-icons/fa";
@@ -32,9 +32,17 @@ const SignUp = () => {
           displayName,
           photoURL
         })
-        .then((res)=>{
+        .then(()=>{
           console.log(res)
-          toast.success("Acount Allraedy")
+          sendEmailVerification(res.user)
+          .then((res)=>
+          {
+            console.log(res)
+          toast.success("Aer You check  Acount verification Email ")
+          })
+          .catch((e)=>{
+            toast.error(e.massage)
+          })
         })
         .catch((e)=>{
              toast.error(e.massage);

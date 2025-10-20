@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router";
 import { FaGithub } from "react-icons/fa";
 import MyContainer from "../MyContainer/MyContainer";
 import {
   GithubAuthProvider,
   GoogleAuthProvider,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -15,12 +16,12 @@ import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
 
 const googleProvider = new GoogleAuthProvider();
-const GitHubprovider  = new GithubAuthProvider()
+const GitHubprovider = new GithubAuthProvider();
 
 const SignIn = () => {
   const [users, setUser] = useState(null);
-
   const [hiden, setHiden] = useState(false);
+  const emailRef = useRef(null);
   const handleSignin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -38,11 +39,16 @@ const SignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         console.log(res.user);
+        if (!res.user.emailVerified) {
+          toast.error("please verified your email");
+          return;
+        }
+
         setUser(res.user);
         toast.success("success Full");
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
         toast.error(e.message);
       });
   };
@@ -60,8 +66,8 @@ const SignIn = () => {
       });
   };
   // Github
-   const hendelgithub = () => {
-     signInWithPopup(auth, GitHubprovider)
+  const hendelgithub = () => {
+    signInWithPopup(auth, GitHubprovider)
       .then((res) => {
         console.log(res.user);
         setUser(res.user);
@@ -74,7 +80,7 @@ const SignIn = () => {
           toast.error("popup closed by user");
         }
       });
-   }  
+  };
 
   //  Google
   const hendelgoogle = () => {
@@ -93,6 +99,16 @@ const SignIn = () => {
       });
   };
 
+  const hendelforget = () => {
+ const email= emailRef.current.value
+sendPasswordResetEmail(auth,email)
+.then(()=>{
+toast.success("password reset")
+})
+  .catch((e)=>{
+  toast.error(e.message)
+  })   
+  };
   return (
     <div className="min-h-[calc(100vh-20px)] flex items-center justify-center bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 relative overflow-hidden">
       {/* Animated glow orbs */}
@@ -140,6 +156,7 @@ const SignIn = () => {
                   <input
                     type="email"
                     name="email"
+                     ref={emailRef}
                     placeholder="example@email.com"
                     className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
@@ -160,11 +177,15 @@ const SignIn = () => {
                     {hiden ? <FaEye /> : <IoEyeOff />}
                   </span>
                 </div>
-
+                <button
+                type="button"
+                onClick={hendelforget} className=" cursor-pointer">
+                  Forget Password?
+                </button>
                 <button type="submit" className="my-btn">
                   Login
                 </button>
-
+              
                 {/* Divider */}
                 <div className="flex items-center justify-center gap-2 my-2">
                   <div className="h-px w-16 bg-white/30"></div>
