@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 import logo from "../assets/firebase-logo.png";
-import MyContainer from "./MyContainer/MyContainer";
-import MyLink from "../../../../Firebase-fighter/src/components/MyLink";
+import MyContainer from "./MyContainer/MyContainer"; 
+import MyLink from "./MyLink/MyLink";
+ 
 
 const Navbar = () => {
   return (

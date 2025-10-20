@@ -1,6 +1,5 @@
-import React from "react";
+ 
 import { NavLink } from "react-router";
-
 const MyLink = ({ to, className, children }) => {
   return (
     <NavLink
