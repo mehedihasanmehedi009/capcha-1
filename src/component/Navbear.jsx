@@ -5,9 +5,10 @@ import MyLink from "./MyLink/MyLink";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import { toast } from "react-toastify";
+import { ClockLoader } from "react-spinners";
 
 const Navbar = () => {
-  const { users, signOutfun, setUser } = useContext(AuthContext);
+  const { users, signOutfun, setUser, Loading } = useContext(AuthContext);
   const hendelsignout = () => {
     signOutfun()
       .then(() => {
@@ -37,7 +38,9 @@ const Navbar = () => {
           </li>
         </ul>
 
-        {users ? (
+        {Loading ? (
+          <ClockLoader color="red" />
+        ) : users ? (
           <div className="text-center space-y-3">
             <details className="dropdown">
               <summary className="btn m-1">

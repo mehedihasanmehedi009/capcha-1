@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import MyContainer from "../MyContainer/MyContainer";
-import { Link } from "react-router";
-import { sendEmailVerification, updateProfile } from "firebase/auth";
+import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
@@ -10,8 +9,9 @@ import { AuthContext } from "../../context/AuthContext";
 
 const SignUp = () => {
   const [hiden, setHiden] = useState(false);
-  const { sendEmailVerificationfun ,createUserWithEmailAndPasswordfun, updateProfilefun } =
+  const { sendEmailVerificationfun ,createUserWithEmailAndPasswordfun, updateProfilefun , setLoading,signOutfun,setUser } =
     useContext(AuthContext);
+    const Naviget = useNavigate()
   const handleSignup = (e) => {
     e.preventDefault();
     const displayName = e.target.name.value;
@@ -38,8 +38,18 @@ const SignUp = () => {
             // verifaction
                 sendEmailVerificationfun() 
               .then((res) => {
-                console.log(res);
+                  console.log(res);
+                    setLoading(false)
+                    //signOut
+                 signOutfun()
+                .then(() => {
                 toast.success("Aer You check  Acount verification Email ");
+               setUser(null);
+               Naviget("/signin")
+                  })
+               .catch((e) => {
+               toast.error(e.message);
+               });
               })
               .catch((e) => {
                 toast.error(e.massage);

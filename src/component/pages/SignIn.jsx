@@ -15,6 +15,7 @@ const SignIn = () => {
     gitHubsing,
     sendpassword,
     setUser,
+    setLoading
     
   } = useContext(AuthContext);
   const emailRef = useRef(null);
@@ -34,17 +35,17 @@ const SignIn = () => {
 
     SignUserWithEmailAndPasswordfun(email, password)
       .then((res) => {
+            setLoading(false)
         console.log(res.user);
         if (!res.user.emailVerified) {
           toast.error("please verified your email");
           return;
         }
-
         setUser(res.user);
         toast.success("success Full");
       })
       .catch((e) => {
-        // console.log(e);
+        console.log(e);
         toast.error(e.message);
       });
   };
@@ -56,6 +57,7 @@ const SignIn = () => {
   const hendelgithub = () => {
     gitHubsing()
       .then((res) => {
+            setLoading(false)
         console.log(res.user);
         setUser(res.user);
         toast.success("success Full");
@@ -73,6 +75,7 @@ const SignIn = () => {
   const hendelgoogle = () => {
     googlesing()
       .then((res) => {
+            setLoading(false)
         console.log(res.user);
         setUser(res.user);
         toast.success("success Full");
@@ -90,6 +93,7 @@ const SignIn = () => {
     const email = emailRef.current.value;
     sendpassword(email)
       .then(() => {
+            setLoading(false)
         toast.success("password reset");
       })
       .catch((e) => {
