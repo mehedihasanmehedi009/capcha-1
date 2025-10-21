@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, {  useContext, useState } from "react";
 import MyContainer from "../MyContainer/MyContainer";
 import { Link } from "react-router";
-import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
-import { auth } from "../../firebase.config";
+import {   sendEmailVerification, updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
+// import { createContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const SignUp = () => {
   const [hiden, setHiden] = useState(false);
+  const {createUserWithEmailAndPasswordfun} = useContext(AuthContext)
   const handleSignup = (e) => {
     e.preventDefault();
     const displayName = e.target.name.value;
@@ -26,7 +28,7 @@ const SignUp = () => {
     //   return;
     // }
 
-    createUserWithEmailAndPassword(auth, email, password)
+     createUserWithEmailAndPasswordfun( email, password)
       .then((res) => {
         updateProfile(res.user,{
           displayName,
