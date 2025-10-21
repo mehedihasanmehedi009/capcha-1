@@ -26,11 +26,11 @@ const AuthProvider = ({ children }) => {
   };
 
   const updateProfilefun = (displayName, photoURL) => {
-    return updateProfile(auth, users, { displayName, photoURL });
+    return updateProfile( auth.currentUser, { displayName, photoURL });
   };
 
   const sendEmailVerificationfun = () => {
-    return sendEmailVerification(auth, users);
+    return sendEmailVerification( auth.currentUser);
   };
 
   const googlesing = () => {

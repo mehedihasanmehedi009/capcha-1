@@ -13,10 +13,9 @@ const SignIn = () => {
     SignUserWithEmailAndPasswordfun,
     googlesing,
     gitHubsing,
-    signOutfun,
     sendpassword,
     setUser,
-    users
+    
   } = useContext(AuthContext);
   const emailRef = useRef(null);
   const handleSignin = (e) => {
@@ -52,16 +51,7 @@ const SignIn = () => {
   const hendels = () => {
     setHiden(!hiden);
   };
-  const hendelsignout = () => {
-    signOutfun()
-      .then(() => {
-        toast.success("SignOut success Full");
-        setUser(false);
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      });
-  };
+ 
   // Github
   const hendelgithub = () => {
     gitHubsing()
@@ -129,20 +119,7 @@ const SignIn = () => {
 
           {/* Login card */}
           <div className="w-full max-w-md backdrop-blur-lg bg-white/10 border border-white/20 shadow-2xl rounded-2xl p-8">
-            {users ? (
-              <div className="text-center space-y-3">
-                <img
-                  src={users?.photoURL || "https://via.placeholder.com/88"}
-                  className="h-20 w-20 rounded-full mx-auto"
-                  alt=""
-                />
-                <h2 className="text-xl font-semibold">{users?.displayName}</h2>
-                <p className="text-white/80">{users?.email}</p>
-                <button onClick={hendelsignout} className="my-btn">
-                  Sign Out
-                </button>
-              </div>
-            ) : (
+        
               <form onSubmit={handleSignin} className="space-y-5">
                 <h2 className="text-2xl font-semibold mb-2 text-center text-white">
                   Sign In
@@ -225,7 +202,7 @@ const SignIn = () => {
                   </Link>
                 </p>
               </form>
-            )}
+       
           </div>
         </div>
       </MyContainer>

@@ -31,9 +31,11 @@ const SignUp = () => {
 
     createUserWithEmailAndPasswordfun(email, password)
       .then((res) => {
+        // profile
         updateProfilefun(displayName, photoURL)
           .then(() => {
             console.log(res)
+            // verifaction
                 sendEmailVerificationfun() 
               .then((res) => {
                 console.log(res);
