@@ -1,7 +1,7 @@
-import React, {  useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import MyContainer from "../MyContainer/MyContainer";
 import { Link } from "react-router";
-import {   sendEmailVerification, updateProfile } from "firebase/auth";
+import { sendEmailVerification, updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
@@ -10,7 +10,8 @@ import { AuthContext } from "../../context/AuthContext";
 
 const SignUp = () => {
   const [hiden, setHiden] = useState(false);
-  const {createUserWithEmailAndPasswordfun} = useContext(AuthContext)
+  const { sendEmailVerificationfun ,createUserWithEmailAndPasswordfun, updateProfilefun } =
+    useContext(AuthContext);
   const handleSignup = (e) => {
     e.preventDefault();
     const displayName = e.target.name.value;
@@ -28,29 +29,23 @@ const SignUp = () => {
     //   return;
     // }
 
-     createUserWithEmailAndPasswordfun( email, password)
+    createUserWithEmailAndPasswordfun(email, password)
       .then((res) => {
-        updateProfile(res.user,{
-          displayName,
-          photoURL
-        })
-        .then(()=>{
-          console.log(res)
-          sendEmailVerification(res.user)
-          .then((res)=>
-          {
+        updateProfilefun(displayName, photoURL)
+          .then(() => {
             console.log(res)
-          toast.success("Aer You check  Acount verification Email ")
+                sendEmailVerificationfun() 
+              .then((res) => {
+                console.log(res);
+                toast.success("Aer You check  Acount verification Email ");
+              })
+              .catch((e) => {
+                toast.error(e.massage);
+              });
           })
-          .catch((e)=>{
-            toast.error(e.massage)
-          })
-        })
-        .catch((e)=>{
-             toast.error(e.massage);
-        })
-      
-        
+          .catch((e) => {
+            toast.error(e.massage);
+          });
       })
       .catch((e) => {
         console.log(e.code);

@@ -2,7 +2,6 @@ import { Link } from "react-router";
 import logo from "../assets/firebase-logo.png";
 import MyContainer from "./MyContainer/MyContainer"; 
 import MyLink from "./MyLink/MyLink";
-import { use } from "react";
 import { AuthContext } from "../context/AuthContext";
  
 

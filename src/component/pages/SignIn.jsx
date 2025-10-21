@@ -1,33 +1,30 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link } from "react-router";
 import { FaGithub } from "react-icons/fa";
 import MyContainer from "../MyContainer/MyContainer";
-import {
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
-import { auth } from "../../firebase.config";
 import { toast } from "react-toastify";
 import { FaEye } from "react-icons/fa";
 import { IoEyeOff } from "react-icons/io5";
-
-const googleProvider = new GoogleAuthProvider();
-const GitHubprovider = new GithubAuthProvider();
+import { AuthContext } from "../../context/AuthContext";
 
 const SignIn = () => {
-  const [users, setUser] = useState(null);
   const [hiden, setHiden] = useState(false);
+  const {
+    SignUserWithEmailAndPasswordfun,
+    googlesing,
+    gitHubsing,
+    signOutfun,
+    sendpassword,
+    setUser,
+    users
+  } = useContext(AuthContext);
   const emailRef = useRef(null);
   const handleSignin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    console.log("sing up fuction", email, password);
+    // console.log("sing up fuction", email, password);
     // const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/;
     // if (!pattern.test(password)) {
     //   toast.error(
@@ -36,7 +33,7 @@ const SignIn = () => {
     //   return;
     // }
 
-    signInWithEmailAndPassword(auth, email, password)
+    SignUserWithEmailAndPasswordfun(email, password)
       .then((res) => {
         console.log(res.user);
         if (!res.user.emailVerified) {
@@ -56,7 +53,7 @@ const SignIn = () => {
     setHiden(!hiden);
   };
   const hendelsignout = () => {
-    signOut(auth)
+    signOutfun()
       .then(() => {
         toast.success("SignOut success Full");
         setUser(false);
@@ -67,7 +64,7 @@ const SignIn = () => {
   };
   // Github
   const hendelgithub = () => {
-    signInWithPopup(auth, GitHubprovider)
+    gitHubsing()
       .then((res) => {
         console.log(res.user);
         setUser(res.user);
@@ -84,7 +81,7 @@ const SignIn = () => {
 
   //  Google
   const hendelgoogle = () => {
-    signInWithPopup(auth, googleProvider)
+    googlesing()
       .then((res) => {
         console.log(res.user);
         setUser(res.user);
@@ -100,14 +97,14 @@ const SignIn = () => {
   };
 
   const hendelforget = () => {
- const email= emailRef.current.value
-sendPasswordResetEmail(auth,email)
-.then(()=>{
-toast.success("password reset")
-})
-  .catch((e)=>{
-  toast.error(e.message)
-  })   
+    const email = emailRef.current.value;
+    sendpassword(email)
+      .then(() => {
+        toast.success("password reset");
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
   };
   return (
     <div className="min-h-[calc(100vh-20px)] flex items-center justify-center bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 relative overflow-hidden">
@@ -156,7 +153,7 @@ toast.success("password reset")
                   <input
                     type="email"
                     name="email"
-                     ref={emailRef}
+                    ref={emailRef}
                     placeholder="example@email.com"
                     className="input input-bordered w-full bg-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
@@ -178,14 +175,16 @@ toast.success("password reset")
                   </span>
                 </div>
                 <button
-                type="button"
-                onClick={hendelforget} className=" cursor-pointer">
+                  type="button"
+                  onClick={hendelforget}
+                  className=" cursor-pointer"
+                >
                   Forget Password?
                 </button>
                 <button type="submit" className="my-btn">
                   Login
                 </button>
-              
+
                 {/* Divider */}
                 <div className="flex items-center justify-center gap-2 my-2">
                   <div className="h-px w-16 bg-white/30"></div>
